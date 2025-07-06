@@ -1,25 +1,25 @@
 @extends('layouts.app')
 
-@section('title', 'YouTube Kanalları - Link Skiplock')
+@section('title', 'YouTube Channels - Link Skiplock')
 
 @section('content')
 <div class="page-header" data-aos="fade-down">
-    <h1 class="page-title">YouTube Kanalları</h1>
-    <p class="page-subtitle">YouTube kanallarınızı ekleyin ve korumalı linkler oluşturun.</p>
+    <h1 class="page-title">YouTube Channels</h1>
+    <p class="page-subtitle">Add your YouTube channels and create protected links.</p>
 </div>
 
 <div class="grid grid-1 gap-6 max-w-4xl mx-auto" data-aos="fade-up">
     <div class="card">
-        <h2 class="mb-6">Yeni Kanal Ekle</h2>
+        <h2 class="mb-6">Add New Channel</h2>
         
         <form method="POST" action="{{ route('channels.store') }}" class="space-y-6">
             @csrf
             <div class="form-group">
-                <label for="channel_url" class="form-label">YouTube Kanal URL'si</label>
+                <label for="channel_url" class="form-label">YouTube Channel URL</label>
                 <input type="url" name="channel_url" id="channel_url" value="{{ old('channel_url') }}" required
-                       class="form-input" placeholder="https://www.youtube.com/@kanaladi">
+                       class="form-input" placeholder="https://www.youtube.com/@channelname">
                 <p class="text-xs text-gray-500 mt-1">
-                    Örnek: https://www.youtube.com/@kanaladi veya https://www.youtube.com/channel/UC...
+                    Example: https://www.youtube.com/@channelname or https://www.youtube.com/channel/UC...
                 </p>
             </div>
 
@@ -28,14 +28,14 @@
                     <svg class="icon icon-sm" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
                     </svg>
-                    Kanal Ekle
+                    Add Channel
                 </button>
             </div>
         </form>
     </div>
 
     <div class="card">
-        <h2 class="mb-6">Eklenen Kanallar</h2>
+        <h2 class="mb-6">Added Channels</h2>
 
         @if($channels->count() > 0)
             <div class="space-y-4">
@@ -52,29 +52,29 @@
                         @endif
 
                         <div class="flex-1">
-                            <h4 style="font-weight: 500; margin-bottom: 0.25rem;">{{ $channel->channel_name ?? 'Bilinmeyen Kanal' }}</h4>
+                            <h4 style="font-weight: 500; margin-bottom: 0.25rem;">{{ $channel->channel_name ?? 'Unknown Channel' }}</h4>
                             <a href="{{ $channel->channel_url }}" target="_blank" 
                                class="text-sm text-gray-600 underline hover:text-gray-800 transition-colors">
-                                Kanalı Görüntüle
+                                View Channel
                             </a>
                             <p class="text-xs text-gray-500 mt-1">
-                                {{ $channel->protectedLinks->count() }} korumalı link
+                                {{ $channel->protectedLinks->count() }} protected links
                             </p>
                         </div>
 
                         <div class="channel-actions">
                             <a href="{{ route('links.create', ['channel' => $channel->id]) }}" 
-                               class="action-btn primary" title="Link Oluştur">
+                               class="action-btn primary" title="Create Link">
                                 <svg class="icon icon-sm" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M12.586 4.586a2 2 0 112.828 2.828l-3 3a2 2 0 01-2.828 0 1 1 0 00-1.414 1.414 4 4 0 005.656 0l3-3a4 4 0 00-5.656-5.656l-1.5 1.5a1 1 0 101.414 1.414l1.5-1.5zm-5 5a2 2 0 012.828 0 1 1 0 101.414-1.414 4 4 0 00-5.656 0l-3 3a4 4 0 105.656 5.656l1.5-1.5a1 1 0 10-1.414-1.414l-1.5 1.5a2 2 0 11-2.828-2.828l3-3z" clip-rule="evenodd" />
                                 </svg>
                             </a>
 
                             <form method="POST" action="{{ route('channels.destroy', $channel) }}" style="display: inline;"
-                                  onsubmit="return confirm('Bu kanalı silmek istediğinizden emin misiniz? Bu kanala ait tüm linkler de silinecek.')">
+                                  onsubmit="return confirm('Are you sure you want to delete this channel? All links associated with this channel will also be deleted.')">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="action-btn danger" title="Kanalı Sil">
+                                <button type="submit" class="action-btn danger" title="Delete Channel">
                                     <svg class="icon icon-sm" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" clip-rule="evenodd" />
                                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
@@ -98,8 +98,8 @@
                         <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
                     </svg>
                 </div>
-                <h3 class="empty-title">Henüz Kanal Yok</h3>
-                <p class="empty-subtitle">İlk YouTube kanalınızı ekleyin ve korumalı linkler oluşturmaya başlayın!</p>
+                <h3 class="empty-title">No Channels Yet</h3>
+                <p class="empty-subtitle">Add your first YouTube channel and start creating protected links!</p>
             </div>
         @endif
     </div>
@@ -114,7 +114,7 @@
         @endif
         <div>
             <h4 class="font-medium mb-1">{{ session('channel_info')['name'] }}</h4>
-            <p class="text-sm text-gray-600">Kanal başarıyla eklendi!</p>
+            <p class="text-sm text-gray-600">Channel added successfully!</p>
         </div>
     </div>
 </div>
